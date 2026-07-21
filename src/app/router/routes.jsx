@@ -4,6 +4,7 @@ import AuthLayout from '../layouts/AuthLayout.jsx'
 import LoginPage from '../../features/auth/pages/LoginPage.jsx'
 import DashboardPage from '../../features/dashboard/pages/DashboardPage.jsx'
 import NotFoundPage from '../../features/errors/pages/NotFoundPage.jsx'
+import ProtectedRoute from './ProtectedRoute.jsx'
 
 export const routes = [
   {
@@ -20,11 +21,16 @@ export const routes = [
     ],
   },
   {
-    element: <AppLayout />,
+    element: <ProtectedRoute />,
     children: [
       {
-        path: '/dashboard',
-        element: <DashboardPage />,
+        element: <AppLayout />,
+        children: [
+          {
+            path: '/dashboard',
+            element: <DashboardPage />,
+          },
+        ],
       },
     ],
   },
