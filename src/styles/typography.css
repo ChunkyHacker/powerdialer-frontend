@@ -1,0 +1,15 @@
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+
+  body {
+    color: var(--color-text-primary);
+    font-size: var(--text-role-body-copy);
+    font-weight: var(--text-role-body-copy--font-weight);
+    letter-spacing: var(--text-role-body-copy--letter-spacing);
+    line-height: var(--text-role-body-copy--line-height);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}

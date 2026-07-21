@@ -1,2 +1,4 @@
+@import "@fontsource-variable/inter";
 @import "tailwindcss";
 @import "./styles/theme.css";
+@import "./styles/typography.css";

@@ -1,5 +1,5 @@
 function NotFoundPage() {
-  return <h1>Page not found</h1>
+  return <h1 className="text-role-page-title">Page not found</h1>
 }
 
 export default NotFoundPage
