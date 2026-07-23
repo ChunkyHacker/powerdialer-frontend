@@ -1,10 +1,35 @@
-import { Navigate, Outlet } from 'react-router'
+import { Navigate, Outlet, useLocation } from 'react-router'
+import { useAuth } from '../../contexts/AuthContext.jsx'
 
 function ProtectedRoute() {
-  // TODO: Replace this temporary value with backend or auth-context state.
-  const isAuthenticated = true
+  const { isAuthenticated, isLoading } = useAuth()
+  const location = useLocation()
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />
+  if (isLoading) {
+    return (
+      <main aria-busy="true" aria-live="polite">
+        Checking session...
+      </main>
+    )
+  }
+
+  if (isAuthenticated) {
+    return <Outlet />
+  }
+
+  const requestedLocation = {
+    pathname: location.pathname,
+    search: location.search,
+    hash: location.hash,
+  }
+
+  return (
+    <Navigate
+      to="/login"
+      replace
+      state={{ from: requestedLocation }}
+    />
+  )
 }
 
 export default ProtectedRoute
