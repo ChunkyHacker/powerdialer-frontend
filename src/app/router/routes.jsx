@@ -15,7 +15,16 @@ import AgentsPage from '../../features/agents/pages/AgentsPage.jsx'
 import DncPage from '../../features/dnc/pages/DncPage.jsx'
 import SettingsPage from '../../features/settings/pages/SettingsPage.jsx'
 import NotFoundPage from '../../features/errors/pages/NotFoundPage.jsx'
+import { defaultHeaderSearchPlaceholder } from '../../constants/headerSearchPlaceholders.js'
 import ProtectedRoute from './ProtectedRoute.jsx'
+
+function createRouteHandle(title, searchPlaceholder = defaultHeaderSearchPlaceholder) {
+  return {
+    title,
+    breadcrumb: title,
+    searchPlaceholder,
+  }
+}
 
 export const routes = [
   {
@@ -28,6 +37,7 @@ export const routes = [
       {
         path: '/login',
         element: <LoginPage />,
+        handle: createRouteHandle('Login'),
       },
     ],
   },
@@ -40,50 +50,62 @@ export const routes = [
           {
             path: '/dashboard',
             element: <DashboardPage />,
+            handle: createRouteHandle('Dashboard'),
           },
           {
             path: '/campaigns',
             element: <CampaignsPage />,
+            handle: createRouteHandle('Campaigns', 'Search campaigns'),
           },
           {
             path: '/lead-lists',
             element: <LeadListsPage />,
+            handle: createRouteHandle('Lead Lists'),
           },
           {
             path: '/leads',
             element: <LeadsPage />,
+            handle: createRouteHandle('Leads', 'Search leads'),
           },
           {
             path: '/dialer',
             element: <DialerPage />,
+            handle: createRouteHandle('Dialer'),
           },
           {
             path: '/callbacks',
             element: <CallbacksPage />,
+            handle: createRouteHandle('Callbacks', 'Search callbacks'),
           },
           {
             path: '/call-logs',
             element: <CallLogsPage />,
+            handle: createRouteHandle('Call Logs'),
           },
           {
             path: '/recordings',
             element: <RecordingsPage />,
+            handle: createRouteHandle('Recordings'),
           },
           {
             path: '/reports',
             element: <ReportsPage />,
+            handle: createRouteHandle('Reports', 'Search reports'),
           },
           {
             path: '/agents',
             element: <AgentsPage />,
+            handle: createRouteHandle('Agents'),
           },
           {
             path: '/dnc',
             element: <DncPage />,
+            handle: createRouteHandle('DNC'),
           },
           {
             path: '/settings',
             element: <SettingsPage />,
+            handle: createRouteHandle('Settings', 'Search settings'),
           },
         ],
       },
@@ -92,5 +114,6 @@ export const routes = [
   {
     path: '*',
     element: <NotFoundPage />,
+    handle: createRouteHandle('Page Not Found'),
   },
 ]

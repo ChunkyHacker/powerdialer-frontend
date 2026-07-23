@@ -1,6 +1,11 @@
 import { useEffect, useRef } from 'react'
+import { Link } from 'react-router'
 
-const profileActions = ['Profile', 'Account Settings', 'Sign Out']
+const profileActions = [
+  { label: 'Profile', disabled: true },
+  { label: 'Account Settings', path: '/settings' },
+  { label: 'Sign Out' },
+]
 
 function UserProfileMenu({ isOpen, onOpenChange }) {
   const containerRef = useRef(null)
@@ -69,18 +74,34 @@ function UserProfileMenu({ isOpen, onOpenChange }) {
           </div>
           <ul className="pt-1">
             {profileActions.map((action) => (
-              <li key={action}>
-                <button
-                  type="button"
-                  onClick={closeMenu}
-                  className={[
-                    'text-role-navigation w-full rounded-sm px-3 py-2 text-left text-text-primary',
-                    'transition-colors hover:bg-surface-page',
-                    'focus-visible:outline-2 focus-visible:outline-brand-accent',
-                  ].join(' ')}
-                >
-                  {action}
-                </button>
+              <li key={action.label}>
+                {action.path ? (
+                  <Link
+                    to={action.path}
+                    onClick={closeMenu}
+                    className={[
+                      'text-role-navigation block w-full rounded-sm px-3 py-2 text-left text-text-primary',
+                      'transition-colors hover:bg-surface-page',
+                      'focus-visible:outline-2 focus-visible:outline-brand-accent',
+                    ].join(' ')}
+                  >
+                    {action.label}
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={action.disabled}
+                    onClick={closeMenu}
+                    className={[
+                      'text-role-navigation w-full rounded-sm px-3 py-2 text-left text-text-primary',
+                      'transition-colors hover:bg-surface-page',
+                      'focus-visible:outline-2 focus-visible:outline-brand-accent',
+                      'disabled:cursor-not-allowed disabled:opacity-50',
+                    ].join(' ')}
+                  >
+                    {action.label}
+                  </button>
+                )}
               </li>
             ))}
           </ul>

@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react'
 import { Bell, Moon, Sun } from 'lucide-react'
-import { useLocation } from 'react-router'
-import {
-  defaultHeaderSearchPlaceholder,
-  headerSearchPlaceholders,
-} from '../../constants/headerSearchPlaceholders.js'
+import { useMatches } from 'react-router'
+import { defaultHeaderSearchPlaceholder } from '../../constants/headerSearchPlaceholders.js'
 import HeaderIconButton from './HeaderIconButton.jsx'
 import HeaderSearch from './HeaderSearch.jsx'
 import OrganizationSwitcher from './OrganizationSwitcher.jsx'
 import UserProfileMenu from './UserProfileMenu.jsx'
 
 function GlobalHeader() {
-  const { pathname } = useLocation()
+  const matches = useMatches()
   const [isDarkTheme, setIsDarkTheme] = useState(
     () => document.documentElement.dataset.theme === 'dark',
   )
   const [openMenu, setOpenMenu] = useState(null)
   const searchPlaceholder =
-    headerSearchPlaceholders[pathname] ?? defaultHeaderSearchPlaceholder
+    [...matches]
+      .reverse()
+      .find((match) => match.handle?.searchPlaceholder)?.handle
+      .searchPlaceholder ?? defaultHeaderSearchPlaceholder
 
   useEffect(() => {
     document.documentElement.dataset.theme = isDarkTheme ? 'dark' : 'light'
