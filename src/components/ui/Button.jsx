@@ -1,3 +1,5 @@
+import Spinner from './Spinner.jsx'
+
 const variantClasses = {
   primary:
     'bg-brand-primary text-surface-card hover:bg-brand-secondary',
@@ -22,6 +24,7 @@ const sizeClasses = {
     loadingText: 'gap-1.5 px-px',
     iconOnly: 'size-control-sm',
     icon: 'size-4',
+    spinner: 'sm',
   },
   md: {
     button: 'h-control-md text-role-navigation',
@@ -29,6 +32,7 @@ const sizeClasses = {
     loadingText: 'gap-2 px-0.5',
     iconOnly: 'size-control-md',
     icon: 'size-5',
+    spinner: 'md',
   },
   lg: {
     button: 'h-control-lg text-role-navigation',
@@ -36,6 +40,7 @@ const sizeClasses = {
     loadingText: 'gap-2 px-2.5',
     iconOnly: 'size-control-lg',
     icon: 'size-5',
+    spinner: 'md',
   },
 }
 
@@ -62,15 +67,7 @@ function Button({
 
   const statusIcon = showStatusIcon ? (
     isLoading ? (
-      <span
-        aria-hidden="true"
-        className={[
-          selectedSize.icon,
-          'shrink-0 animate-spin rounded-full border-2 border-current border-r-transparent',
-        ]
-          .filter(Boolean)
-          .join(' ')}
-      />
+      <Spinner decorative size={selectedSize.spinner} />
     ) : (
       <Icon
         aria-hidden="true"
