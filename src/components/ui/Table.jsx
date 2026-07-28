@@ -1,3 +1,10 @@
+/**
+ * Accessible, horizontally scrollable presentation for parent-owned row data,
+ * selection, sorting, and pagination state.
+ *
+ * The table supplies semantic markup and rendering boundaries while callbacks
+ * return user intent to the parent instead of mutating application data.
+ */
 import { useEffect, useRef } from 'react'
 import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react'
 import TablePagination from './TablePagination.jsx'
@@ -129,6 +136,8 @@ function Table({
   containerClassName = '',
   ...tableProps
 }) {
+  // Defensive normalization protects presentation from malformed collections;
+  // selection is enabled only when the parent supplies both state and an updater.
   const normalizedColumns = Array.isArray(columns)
     ? columns.filter(
         (column) =>
@@ -218,6 +227,8 @@ function Table({
     onSelectedRowIdsChange([...nextSelectedIds])
   }
 
+  // Sorting remains controlled: the table derives the next direction and emits
+  // it without reordering rows that belong to the parent.
   function requestSort(column) {
     if (!column.sortable || typeof onSortChange !== 'function') {
       return
@@ -232,6 +243,8 @@ function Table({
     onSortChange({ columnId: column.id, direction })
   }
 
+  // Loading rows take precedence over empty and populated states. Populated
+  // cells cross the customization boundary only through column/action renderers.
   return (
     <div
       className={[

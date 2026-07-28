@@ -1,3 +1,7 @@
+/**
+ * Coordinates a labelled collection of avatars, including shared sizing,
+ * overlap, and overflow presentation.
+ */
 import AvatarOverflow from './AvatarOverflow.jsx'
 import { AvatarGroupProvider } from './AvatarGroupContext.js'
 import {
@@ -28,6 +32,8 @@ function AvatarGroup({
     ? size
     : 'md'
   const selectedSize = avatarSizeClasses[selectedSizeKey]
+  // Normalize and flatten children before counting so fragments behave like
+  // direct avatar children and truncation uses one predictable list.
   const normalizedMax = normalizeAvatarMax(max)
   const normalizedChildren = flattenAvatarChildren(children)
   const total = normalizedChildren.length
@@ -35,6 +41,8 @@ function AvatarGroup({
     normalizedMax !== null &&
     normalizedMax > 0 &&
     total > normalizedMax
+  // When truncated, one requested slot is reserved for the overflow indicator
+  // rather than rendering it as an additional uncounted item.
   const visibleChildCount = hasOverflow
     ? Math.max(0, normalizedMax - 1)
     : normalizedMax === 0
@@ -59,6 +67,8 @@ function AvatarGroup({
   const isLabelled = Boolean(ariaLabel || ariaLabelledBy)
 
   return (
+    // Descendants inherit size and overlap styling, while this outer group owns
+    // any collective accessible name supplied by the consumer.
     <AvatarGroupProvider
       value={{ size: selectedSizeKey, grouped: overlap }}
     >

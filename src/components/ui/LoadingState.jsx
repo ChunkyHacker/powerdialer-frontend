@@ -1,3 +1,7 @@
+/**
+ * Owns one accessible loading announcement while using a decorative Spinner
+ * internally to avoid duplicate screen-reader messages.
+ */
 import Spinner from './Spinner.jsx'
 
 const alignmentClasses = {

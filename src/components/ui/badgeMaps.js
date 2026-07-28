@@ -1,3 +1,9 @@
+/**
+ * Translates normalized business statuses into Badge presentation.
+ *
+ * Domain mappings remain separate from visual styles so features can replace
+ * or extend their vocabulary without changing the Badge primitive.
+ */
 export const campaignStatusMap = {
   active: {
     label: 'Active',

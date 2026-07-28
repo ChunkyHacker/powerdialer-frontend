@@ -1,4 +1,12 @@
-@import "@fontsource-variable/inter";
+/**
+ * Global stylesheet entry point.
+ *
+ * Composes the font source, Tailwind processing, project design tokens, and
+ * shared typography into the single global stylesheet loaded by the app.
+ *
+ * Order is intentional: fonts and Tailwind load before theme and typography
+ * rules consume their font definitions, tokens, utilities, and text roles.
+ */@import "@fontsource-variable/inter";
 @import "tailwindcss";
 @import "./styles/theme.css";
 @import "./styles/typography.css";

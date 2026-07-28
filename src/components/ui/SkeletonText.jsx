@@ -1,3 +1,6 @@
+/**
+ * Builds realistic text placeholders with a defensively capped line count.
+ */
 import Skeleton from './Skeleton.jsx'
 
 const MAX_LINES = 20
@@ -47,6 +50,8 @@ function SkeletonText({
       return configuredLineWidth
     }
 
+    // A shorter final line resembles natural copy and avoids a repetitive block
+    // when callers have not supplied per-line widths.
     if (index === lineCount - 1) {
       if (hasExplicitLastLineWidth) {
         return normalizeDimension(lastLineWidth)

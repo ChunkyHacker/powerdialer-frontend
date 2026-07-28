@@ -1,3 +1,7 @@
+/**
+ * Provides the application-wide authentication state and actions.
+ * The consumer hook rejects usage outside this provider boundary.
+ */
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 const AuthContext = createContext(null)
@@ -6,6 +10,8 @@ export function AuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
+  // Session resolution is currently simulated asynchronously. Cleanup prevents
+  // the timer from updating provider state after the provider unmounts.
   useEffect(() => {
     const sessionTimer = window.setTimeout(() => {
       setIsLoading(false)
@@ -14,6 +20,8 @@ export function AuthProvider({ children }) {
     return () => window.clearTimeout(sessionTimer)
   }, [])
 
+  // A stable value prevents context consumers from updating when neither
+  // authentication nor loading state has changed.
   const authValue = useMemo(
     () => ({
       isAuthenticated,

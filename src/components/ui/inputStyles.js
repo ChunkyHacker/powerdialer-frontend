@@ -1,3 +1,9 @@
+/**
+ * Shared visual maps for Input, Textarea, and compound input controls.
+ *
+ * Central size and variant definitions keep control geometry aligned instead
+ * of allowing each field component to evolve independently.
+ */
 export const controlBaseClasses =
   'flex min-w-0 items-center rounded-lg border text-text-primary transition-[border-color,box-shadow,background-color]'
 

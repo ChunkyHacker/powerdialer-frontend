@@ -1,3 +1,10 @@
+/**
+ * Coordinates controlled or uncontrolled tooltip visibility, trigger events,
+ * delayed timing, accessible descriptions, and portal-rendered content.
+ *
+ * Position measurement is delegated to useTooltipPosition so Tooltip retains
+ * interaction ownership while geometry updates remain isolated.
+ */
 import {
   Children,
   cloneElement,
@@ -116,6 +123,8 @@ export function Tooltip({
     [clearCloseTimer, clearOpenTimer, requestOpenChange],
   )
 
+  // Only one tooltip remains active globally. Delayed pointer opening avoids
+  // flashes during brief movement, while focus can open the same content directly.
   const requestCoordinatedOpen = useCallback(
     (reason) => {
       if (disabled) {
@@ -136,6 +145,8 @@ export function Tooltip({
     ],
   )
 
+  // Close work is cancelled whenever pointer or focus interaction resumes; the
+  // tooltip closes only after neither input mode still considers it active.
   const scheduleClose = useCallback(
     (reason) => {
       clearOpenTimer()
@@ -317,6 +328,8 @@ export function TooltipTrigger({
     setRef(ref, node)
   }
 
+  // The generated content ID joins any existing descriptions only while the
+  // tooltip exists, so the trigger never references absent portal content.
   function getDescriptionIds(existingIds) {
     return context.isOpen
       ? mergeDescriptionIds(existingIds, context.contentId)
@@ -473,6 +486,9 @@ export function TooltipContent({
     return null
   }
 
+  // Portalling escapes ancestor clipping and stacking contexts. Measurement
+  // controls only visibility and animation; reduced motion does not change the
+  // tooltip's open state or accessible relationship.
   return createPortal(
     <div
       {...contentProps}

@@ -1,3 +1,9 @@
+/**
+ * Centralizes reusable button behavior and presentation.
+ *
+ * Variant and size maps keep tone, geometry, icon sizing, and loading feedback
+ * coordinated across every use of the primitive.
+ */
 import Spinner from './Spinner.jsx'
 
 const variantClasses = {
@@ -65,6 +71,8 @@ function Button({
   const contentClasses =
     isLoading && !Icon ? selectedSize.loadingText : selectedSize.content
 
+  // Loading feedback takes precedence over a supplied icon and also disables
+  // the native button, preventing duplicate interaction without changing roles.
   const statusIcon = showStatusIcon ? (
     isLoading ? (
       <Spinner decorative size={selectedSize.spinner} />

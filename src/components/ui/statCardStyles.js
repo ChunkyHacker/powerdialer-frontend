@@ -1,3 +1,9 @@
+/**
+ * Independent visual dimensions for metric cards and their trends.
+ *
+ * Trend sentiment communicates business direction separately from the overall
+ * card tone, so a positive trend need not inherit the card's visual treatment.
+ */
 export const statCardToneClasses = {
   neutral: 'bg-slate-100 text-slate-700',
   accent: 'bg-brand-accent/15 text-brand-primary',

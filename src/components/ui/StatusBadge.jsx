@@ -1,5 +1,11 @@
+/**
+ * Translates business-domain values into props for the presentation-only Badge
+ * primitive, with defensive fallbacks for unknown values and invalid maps.
+ */
 import Badge from './Badge.jsx'
 
+// Equivalent status formats share one lookup key, keeping domain input details
+// out of Badge's visual API.
 function normalizeStatusKey(value) {
   return String(value)
     .trim()
@@ -31,6 +37,8 @@ function StatusBadge(props) {
     return null
   }
 
+  // A mapping is accepted only when both the map and matched entry have the
+  // expected shape; otherwise the original value receives neutral presentation.
   const mappedStatus =
     hasValue &&
     isValidMap(map) &&
@@ -53,6 +61,8 @@ function StatusBadge(props) {
       ? mappedLabel
       : fallbackLabel ?? String(value).trim()
 
+  // Mapped props establish defaults, then explicit consumer props are spread
+  // later so supported overrides retain final precedence.
   return (
     <Badge
       {...mappedProps}

@@ -1,3 +1,10 @@
+/**
+ * Measures tooltip geometry and returns viewport-safe, presentation-ready
+ * coordinates once both the trigger and floating element are available.
+ *
+ * Rendering and visibility ownership stay with Tooltip; this hook owns only
+ * measurement scheduling and geometry updates.
+ */
 import {
   useCallback,
   useEffect,
@@ -57,6 +64,8 @@ function clamp(value, minimum, maximum) {
   return Math.min(Math.max(value, minimum), maximum)
 }
 
+// The preferred side is retained when it fits; otherwise the opposite side wins
+// only when it offers more room, and final coordinates clamp to viewport padding.
 function calculatePosition({
   triggerRect,
   tooltipRect,
@@ -209,6 +218,8 @@ export function useTooltipPosition({
     triggerElement,
   ])
 
+  // A single animation frame batches repeated layout requests from opening,
+  // scrolling, viewport changes, and element resizing.
   const scheduleUpdate = useCallback(() => {
     if (frameRef.current !== null) {
       cancelAnimationFrame(frameRef.current)
@@ -227,6 +238,8 @@ export function useTooltipPosition({
     return undefined
   }, [open, scheduleUpdate])
 
+  // Listeners and ResizeObserver share the scheduler rather than duplicating
+  // measurement logic. Cleanup removes every source and cancels pending work.
   useEffect(() => {
     if (!open || !triggerElement || !tooltipElement) {
       return undefined

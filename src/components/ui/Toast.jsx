@@ -1,3 +1,9 @@
+/**
+ * Presents one notification while ToastProvider owns collection and queue state.
+ *
+ * This component owns the pausable auto-dismiss countdown and reports manual or
+ * automatic dismissal through the provider callback.
+ */
 import { useEffect, useRef, useState } from 'react'
 import {
   CircleCheck,
@@ -54,6 +60,8 @@ export function Toast({
     !notification.persistent && notification.phase !== 'exiting'
   const assertive = notification.variant === 'error'
 
+  // Timer revisions restart updated notifications. Hover, contained focus, and
+  // hidden documents pause the countdown while preserving its remaining time.
   useEffect(() => {
     if (revisionRef.current !== notification.timerRevision) {
       revisionRef.current = notification.timerRevision
@@ -122,6 +130,9 @@ export function Toast({
     }
   }
 
+  // Errors announce assertively while other variants remain polite. Visible
+  // text carries meaning, icons stay decorative, and reduced-motion classes
+  // change animation only—not roles, labels, or dismissal behavior.
   return (
     <article
       role={assertive ? 'alert' : 'status'}

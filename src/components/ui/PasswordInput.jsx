@@ -1,3 +1,7 @@
+/**
+ * Adds local password-visibility presentation to the shared InputControl while
+ * preserving FormField IDs, descriptions, and validation relationships.
+ */
 import { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 import FormField from './FormField.jsx'
@@ -40,6 +44,8 @@ function PasswordInput({
   'aria-errormessage': ariaErrorMessage,
   ...inputProps
 }) {
+  // Visibility is local because it changes only input presentation; the toggle
+  // swaps the native type without replacing the field or its accessible IDs.
   const [isVisible, setIsVisible] = useState(false)
   const VisibilityIcon = isVisible ? EyeOff : Eye
 

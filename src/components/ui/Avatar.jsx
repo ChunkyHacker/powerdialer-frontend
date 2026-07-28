@@ -1,3 +1,9 @@
+/**
+ * Presents an accessible avatar with independent visual fallback and labeling.
+ *
+ * Visible initials describe appearance; the wrapper's accessible label owns
+ * the avatar's meaning and any valid presence status.
+ */
 import { useState } from 'react'
 import { useAvatarGroup } from './AvatarGroupContext.js'
 import {
@@ -63,6 +69,8 @@ function Avatar({
   ...avatarProps
 }) {
   const group = useAvatarGroup()
+  // An explicit size wins over inherited group configuration, with the
+  // standalone default used only when neither supplies a valid size.
   const selectedSizeKey = Object.prototype.hasOwnProperty.call(
     avatarSizeClasses,
     size,
@@ -89,6 +97,9 @@ function Avatar({
     presence: selectedPresence,
   })
 
+  // The fallback remains mounted beneath the image so failures reveal it
+  // without rebuilding state. The wrapper label owns status meaning, which
+  // keeps the visible presence marker purely decorative.
   return (
     <span
       {...avatarProps}

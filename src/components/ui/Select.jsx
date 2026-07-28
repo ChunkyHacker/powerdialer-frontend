@@ -1,3 +1,10 @@
+/**
+ * Compound listbox that composes custom presentation and keyboard behavior over
+ * controlled or uncontrolled value and open-state ownership.
+ *
+ * Context connects the labelled trigger, registered options, selected value,
+ * and portalled listbox without relying on native select rendering.
+ */
 import {
   createContext,
   useCallback,
@@ -85,6 +92,8 @@ export function Select({
     [close, isValueControlled, onValueChange],
   )
 
+  // Option registration supplies the selected display value and a DOM-ordered
+  // focus model without requiring the Select root to own option markup.
   const registerOption = useCallback((id, option) => {
     optionsRef.current.set(id, option)
     setOptionsVersion((current) => current + 1)
@@ -117,6 +126,8 @@ export function Select({
     [optionsVersion, selectedValue],
   )
 
+  // Outside-pointer dismissal is active only while the listbox is open and is
+  // removed during cleanup so document listeners cannot accumulate.
   useEffect(() => {
     if (!isOpen) {
       return undefined
@@ -292,6 +303,8 @@ export function SelectContent({
     align,
   })
 
+  // Opening focuses the selected option when available, otherwise the requested
+  // first/last fallback; subsequent key handling moves only among enabled options.
   useEffect(() => {
     if (!context.isOpen) {
       return

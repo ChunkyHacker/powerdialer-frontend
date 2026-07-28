@@ -1,3 +1,9 @@
+/**
+ * Independent presentation maps for StatusIndicator.
+ *
+ * Tone, size, marker type, and pulse behavior compose without embedding any
+ * business-domain state rules in the visual primitive.
+ */
 export const statusIndicatorBaseClasses =
   'inline-flex items-center whitespace-nowrap'
 

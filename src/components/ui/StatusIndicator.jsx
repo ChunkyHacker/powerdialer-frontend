@@ -1,3 +1,7 @@
+/**
+ * Presentation-only status text with independently resolved tone, size, marker,
+ * and consumer-controlled pulse behavior; domain mapping belongs elsewhere.
+ */
 import { cloneElement, isValidElement } from 'react'
 import {
   statusIndicatorBaseClasses,
@@ -38,6 +42,8 @@ function StatusIndicator({
   ref,
   ...spanProps
 }) {
+  // Visible text owns the status meaning, so no label means no component. Dot
+  // and icon markers remain decorative to avoid repeating that meaning.
   if (!hasVisibleLabel(label)) {
     return null
   }

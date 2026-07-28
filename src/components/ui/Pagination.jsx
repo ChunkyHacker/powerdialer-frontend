@@ -1,3 +1,7 @@
+/**
+ * Controlled pagination that normalizes external counts and page values before
+ * deriving safe labels and navigation requests.
+ */
 import Button from './Button.jsx'
 
 function normalizePositiveInteger(value, fallback) {
@@ -33,6 +37,8 @@ function Pagination({
     1,
     Math.ceil(normalizedTotalItems / normalizedPageSize),
   )
+  // Display is clamped for readable output, but an out-of-range requested page
+  // remains detectable so neither control can emit a misleading transition.
   const displayPage = Math.min(normalizedPage, totalPages)
   const rangeStart =
     normalizedTotalItems === 0
@@ -57,6 +63,8 @@ function Pagination({
     normalizedPage >= totalPages ||
     pageOutOfRange
 
+  // The parent owns page state; this guard only emits valid controlled updates
+  // when navigation is enabled and a callback is available.
   function requestPage(nextPage) {
     if (
       controlsDisabled ||

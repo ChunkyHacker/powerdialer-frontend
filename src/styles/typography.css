@@ -1,9 +1,15 @@
-@layer base {
+/**
+ * Global typographic baseline.
+ *
+ * Applies the design system's default text role at the document level while
+ * reusable role utilities provide consistent hierarchy across components.
+ */@layer base {
   html {
     font-family: var(--font-sans);
   }
 
-  body {
+  /* Body defaults and platform-specific smoothing keep text rendering
+     consistent without repeating raw font settings in individual components. */body {
     color: var(--color-text-primary);
     font-size: var(--text-role-body-copy);
     font-weight: var(--text-role-body-copy--font-weight);

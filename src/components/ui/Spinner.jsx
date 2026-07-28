@@ -1,3 +1,7 @@
+/**
+ * Provides loading feedback either as its own status or as a decorative part
+ * of a parent live region. Its animation also stops for reduced-motion users.
+ */
 const sizeClasses = {
   xs: {
     className: 'size-3',

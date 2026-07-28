@@ -1,3 +1,9 @@
+/**
+ * Shared positioning hook for portalled menus and listboxes.
+ *
+ * Geometry is calculated in one callback so initial layout, resize, scroll, and
+ * caller-requested updates all use the same placement and collision rules.
+ */
 import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 
 const VIEWPORT_PADDING = 12
@@ -31,6 +37,8 @@ export function useFloatingPosition({
       window.innerHeight - triggerRect.bottom - CONTENT_GAP - VIEWPORT_PADDING
     const availableAbove =
       triggerRect.top - CONTENT_GAP - VIEWPORT_PADDING
+    // Placement prefers the space below and flips above only when below cannot
+    // fit the content and the opposite side offers more room.
     const placeAbove =
       contentRect.height > availableBelow && availableAbove > availableBelow
     const availableHeight = Math.max(
@@ -45,6 +53,8 @@ export function useFloatingPosition({
       window.innerWidth - VIEWPORT_PADDING * 2,
     )
     const measuredWidth = Math.min(contentRect.width, maxWidth)
+    // Alignment is resolved for the chosen width. Horizontal position is
+    // clamped on both sides; vertical placement is bounded on its chosen side.
     const desiredLeft =
       align === 'end'
         ? triggerRect.right - measuredWidth
@@ -80,6 +90,8 @@ export function useFloatingPosition({
     }
   }, [open, updatePosition])
 
+  // Capture-phase scroll handling also reacts to nested scrollers; cleanup
+  // removes both global listeners whenever the floating content closes.
   useEffect(() => {
     if (!open) {
       return undefined

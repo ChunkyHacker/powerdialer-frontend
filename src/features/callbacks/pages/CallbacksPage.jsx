@@ -20,6 +20,8 @@ const callbackItems = [
 ]
 
 function CallbacksPage() {
+  // The page owns the controlled value; the shared Tabs system supplies tab
+  // semantics, focus movement, and keyboard interaction.
   const [activeView, setActiveView] = useState('list')
 
   return (

@@ -1,3 +1,10 @@
+/**
+ * Controlled or uncontrolled search field with optional debounced notifications.
+ *
+ * SearchInput owns field labeling, the clear control has its own accessible
+ * name, and native or consumer handlers retain ownership of shortcut/Escape
+ * behavior because this component does not replace the input's keyboard model.
+ */
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { X } from 'lucide-react'
 import SearchInput from './SearchInput.jsx'
@@ -70,6 +77,8 @@ function SearchBar({
     [ref],
   )
 
+  // The rendered value updates immediately; only onValueChange enters the
+  // debounce pipeline, while the native onChange event remains synchronous.
   function notifyValueChange(nextValue) {
     clearPendingCallback()
 
@@ -101,6 +110,8 @@ function SearchBar({
     notifyValueChange(nextValue)
   }
 
+  // Clearing cancels stale work, publishes the empty value immediately, runs
+  // the clear callback, and restores input focus in that deliberate order.
   function handleClear() {
     clearPendingCallback()
 

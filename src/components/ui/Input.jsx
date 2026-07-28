@@ -1,3 +1,9 @@
+/**
+ * Composes FormField's accessible structure with a reusable low-level input.
+ *
+ * Exporting InputControl lets related fields such as PasswordInput share base
+ * behavior without duplicating control markup or styling.
+ */
 import FormField from './FormField.jsx'
 import {
   controlBaseClasses,
@@ -6,6 +12,8 @@ import {
   variantClasses,
 } from './inputStyles.js'
 
+// ARIA ID lists may come from both consumers and FormField; normalization
+// removes whitespace and duplicates before the relationship reaches the input.
 function mergeDescriptionIds(...values) {
   return [
     ...new Set(
@@ -18,6 +26,8 @@ function mergeDescriptionIds(...values) {
   ].join(' ') || undefined
 }
 
+// This primitive owns the native input, adornments, and visual state while its
+// callers remain responsible for labels and descriptive-message ownership.
 export function InputControl({
   type,
   disabled,
@@ -132,6 +142,8 @@ function Input({
   'aria-errormessage': ariaErrorMessage,
   ...inputProps
 }) {
+  // FormField errors override consumer-provided ARIA state so visible
+  // validation and the control's accessibility relationships agree.
   return (
     <FormField
       id={id}

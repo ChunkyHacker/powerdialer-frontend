@@ -1,3 +1,7 @@
+/**
+ * Derives the breadcrumb trail from matched routes that explicitly publish
+ * breadcrumb metadata.
+ */
 import { Link, useMatches } from 'react-router'
 
 function Breadcrumbs() {
@@ -16,6 +20,8 @@ function Breadcrumbs() {
     <nav aria-label="Breadcrumb">
       <ol className="text-role-helper mb-4 flex items-center gap-2 text-text-secondary">
         {breadcrumbs.map((breadcrumb, index) => {
+          // The final match represents the current page, so it is announced as
+          // text instead of offering a link back to itself.
           const isCurrentPage = index === breadcrumbs.length - 1
 
           return (

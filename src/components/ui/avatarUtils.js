@@ -4,10 +4,14 @@ function normalizeText(value) {
   return typeof value === 'string' ? value.trim() : ''
 }
 
+// Array.from works with Unicode code points, avoiding broken initials when a
+// visible character occupies more than one UTF-16 code unit.
 function limitUppercaseCodePoints(value) {
   return Array.from(value.toUpperCase()).slice(0, 2).join('')
 }
 
+// Overflow values are kept finite, positive, and integral before either the
+// visual count or accessible label consumes them.
 function normalizeOverflowCount(count) {
   if (
     typeof count !== 'number' ||
@@ -24,6 +28,8 @@ export function isValidImageSource(src) {
   return typeof src === 'string' && src.trim().length > 0
 }
 
+// Explicit initials win; otherwise the first and last usable name parts are
+// reduced to a short fallback, with "?" covering missing names.
 export function getAvatarInitials({ name, initials } = {}) {
   const providedInitials = normalizeText(initials).replace(/\s/gu, '')
 
@@ -98,6 +104,8 @@ export function getAvatarOverflowLabel(count) {
   return `${normalizedCount} more ${normalizedCount === 1 ? 'user' : 'users'}`
 }
 
+// Recursive fragment expansion gives AvatarGroup a stable list for visibility
+// and overflow calculations while ignoring non-element children.
 export function flattenAvatarChildren(children) {
   const flattenedChildren = []
 

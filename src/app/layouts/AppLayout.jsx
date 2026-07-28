@@ -1,3 +1,7 @@
+/**
+ * Composes the authenticated application shell around the active child route.
+ * Its outlet renders the matched protected screen inside the persistent shell.
+ */
 import { useEffect, useRef } from 'react'
 import { Outlet, useLocation, useMatches } from 'react-router'
 import Breadcrumbs from '../../components/navigation/Breadcrumbs.jsx'
@@ -12,12 +16,16 @@ function AppLayout() {
     .reverse()
     .find((match) => match.handle?.title)?.handle.title
 
+  // Route metadata is the single source for browser titles across protected
+  // screens, with a product-level fallback for routes without a title.
   useEffect(() => {
     document.title = currentTitle
       ? `${currentTitle} | PowerDialer`
       : 'PowerDialer'
   }, [currentTitle])
 
+  // Moving focus after navigation announces the new main region to keyboard
+  // and assistive-technology users without changing the scroll position.
   useEffect(() => {
     mainContentRef.current?.focus({ preventScroll: true })
   }, [pathname])

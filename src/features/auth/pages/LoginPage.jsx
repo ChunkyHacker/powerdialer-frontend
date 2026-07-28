@@ -1,3 +1,10 @@
+/**
+ * Completes mock authentication and safely returns the user to the route that
+ * originally required login.
+ *
+ * Destination validation is repeated here because navigation is the final
+ * boundary before an untrusted route-state value is used.
+ */
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import { useAuth } from '../../../contexts/AuthContext.jsx'
@@ -30,6 +37,8 @@ function LoginPage() {
 
   function handleSubmit(event) {
     event.preventDefault()
+    // Update authentication first so the protected boundary permits the
+    // destination when navigation runs immediately afterward.
     login()
     navigate(getSafeDestination(location.state?.from), { replace: true })
   }

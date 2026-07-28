@@ -1,3 +1,9 @@
+/**
+ * Compound controlled or uncontrolled menu rendered through a positioned portal.
+ *
+ * Registered items provide accessible keyboard focus order while the trigger,
+ * content, and dismissal behavior share state through context.
+ */
 import {
   createContext,
   useCallback,
@@ -51,6 +57,8 @@ export function DropdownMenu({
     [isControlled, onOpenChange],
   )
 
+  // Dismissal can optionally restore trigger focus on the next frame, after the
+  // controlled or uncontrolled close update has removed the menu content.
   const close = useCallback(
     ({ restoreFocus = false } = {}) => {
       setOpen(false)
@@ -80,6 +88,8 @@ export function DropdownMenu({
     [],
   )
 
+  // The outside-pointer listener exists only while open and is removed by the
+  // effect cleanup, avoiding persistent document handlers across menu lifetimes.
   useEffect(() => {
     if (!isOpen) {
       return undefined
@@ -223,6 +233,8 @@ export function DropdownMenuContent({
     items[nextIndex].ref.current?.focus()
   }
 
+  // Arrow and boundary keys move among enabled items; Escape closes and restores
+  // the trigger, while Tab closes without overriding normal focus progression.
   function handleKeyDown(event) {
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault()

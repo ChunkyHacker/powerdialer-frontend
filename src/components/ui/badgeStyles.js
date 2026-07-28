@@ -1,3 +1,9 @@
+/**
+ * Presentation-only style maps for Badge.
+ *
+ * Each tone coordinates container and dot colors, while each size keeps label,
+ * icon, and spacing geometry aligned independently of business-domain values.
+ */
 export const badgeVariantClasses = {
   neutral: {
     badge: 'border-slate-200 bg-slate-100 text-slate-700',

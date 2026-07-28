@@ -1,3 +1,9 @@
+/**
+ * Polymorphic visual placeholder for loading layouts.
+ *
+ * Dimensions accept normalized numeric or string values so the same primitive
+ * can fit different layout contexts without changing its decorative behavior.
+ */
 const radiusClasses = {
   none: 'rounded-none',
   sm: 'rounded-sm',
@@ -41,6 +47,8 @@ function Skeleton({
   'aria-live': ariaLive,
   ...skeletonProps
 }) {
+  // Skeletons do not render children or expose announced/focusable semantics;
+  // these props are consumed deliberately rather than reaching the chosen root.
   void children
   void role
   void tabIndex

@@ -1,3 +1,6 @@
+/**
+ * Produces a configurable decorative row that mirrors a table's column rhythm.
+ */
 import Skeleton from './Skeleton.jsx'
 
 const alignmentClasses = {
@@ -31,6 +34,8 @@ function SkeletonTableRow({
   ref,
   ...rowProps
 }) {
+  // Object normalization accepts lightweight column entries, while fallback
+  // widths create realistic variation without configuration for every cell.
   const normalizedColumns = Array.isArray(columns)
     ? columns.map((column) =>
         column && typeof column === 'object' ? column : {},

@@ -1,3 +1,9 @@
+/**
+ * Specializes Dialog for standard or destructive confirmation workflows.
+ *
+ * It reuses Dialog's modal accessibility and dismissal behavior while the
+ * consumer retains ownership of the action and any feature-level error display.
+ */
 import { useRef, useState } from 'react'
 import { X } from 'lucide-react'
 import Button from './Button.jsx'
@@ -39,6 +45,8 @@ export default function ConfirmationDialog({
   const effectivelyBusy = loading || internalPending
   const confirmVariant = variant === 'danger' ? 'danger' : 'primary'
 
+  // The ref closes the same-render duplicate-click window. Busy state then
+  // disables confirm, cancel, Escape, and outside dismissal until work settles.
   async function handleConfirm() {
     if (effectivelyBusy || disabled || pendingGuardRef.current) {
       return

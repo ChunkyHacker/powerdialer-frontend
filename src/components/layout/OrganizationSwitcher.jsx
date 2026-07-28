@@ -1,3 +1,7 @@
+/**
+ * Keeps organization selection locally while the header controls whether this
+ * menu is open.
+ */
 import { useEffect, useRef, useState } from 'react'
 
 const organizations = ['Acme Corp', 'Support Team']
@@ -9,6 +13,8 @@ function OrganizationSwitcher({ isOpen, onOpenChange }) {
   const containerRef = useRef(null)
   const triggerRef = useRef(null)
 
+  // Global listeners exist only while open: outside interaction dismisses the
+  // menu, Escape also restores trigger focus, and cleanup avoids duplicates.
   useEffect(() => {
     if (!isOpen) {
       return undefined
@@ -36,6 +42,8 @@ function OrganizationSwitcher({ isOpen, onOpenChange }) {
     }
   }, [isOpen, onOpenChange])
 
+  // Selection closes the controlled menu before returning focus to its trigger
+  // so keyboard navigation resumes from a predictable location.
   function selectOrganization(organization) {
     setSelectedOrganization(organization)
     onOpenChange(false)

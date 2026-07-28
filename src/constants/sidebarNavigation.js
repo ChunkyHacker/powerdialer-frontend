@@ -1,3 +1,7 @@
+/**
+ * Keeps Sidebar link rendering data-driven; each `end` flag selects exact
+ * matching or allows the item to remain active for nested route prefixes.
+ */
 import {
   Ban,
   CalendarClock,

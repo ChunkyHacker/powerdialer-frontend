@@ -1,3 +1,7 @@
+/**
+ * Applies the same FormField and ARIA relationship model as Input to a native
+ * textarea, including shared helper-versus-error precedence.
+ */
 import FormField from './FormField.jsx'
 import {
   resizeClasses,
@@ -6,6 +10,8 @@ import {
   variantClasses,
 } from './inputStyles.js'
 
+// Consumer and generated description IDs are normalized together so error state
+// can consistently own invalid semantics without dropping external descriptions.
 function mergeDescriptionIds(...values) {
   return [
     ...new Set(

@@ -1,3 +1,7 @@
+/**
+ * Renders profile actions while the header owns this menu's controlled open
+ * state.
+ */
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 
@@ -11,6 +15,8 @@ function UserProfileMenu({ isOpen, onOpenChange }) {
   const containerRef = useRef(null)
   const triggerRef = useRef(null)
 
+  // Register dismissal listeners only while open. Outside interaction closes
+  // the menu, Escape restores focus, and cleanup prevents duplicate handlers.
   useEffect(() => {
     if (!isOpen) {
       return undefined
@@ -38,6 +44,7 @@ function UserProfileMenu({ isOpen, onOpenChange }) {
     }
   }, [isOpen, onOpenChange])
 
+  // Action-based dismissal also restores the trigger as the keyboard anchor.
   function closeMenu() {
     onOpenChange(false)
     triggerRef.current?.focus()

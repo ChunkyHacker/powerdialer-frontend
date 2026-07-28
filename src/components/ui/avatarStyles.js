@@ -1,3 +1,9 @@
+/**
+ * Coordinated visual maps for the Avatar system.
+ *
+ * Each size keeps avatar dimensions, text, presence geometry, and group overlap
+ * together so related components cannot drift out of alignment.
+ */
 export const avatarSizeClasses = {
   xs: {
     root: 'size-6',

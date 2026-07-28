@@ -1,3 +1,9 @@
+/**
+ * Compound Card root with shared styling and flexible HTML semantics.
+ *
+ * The polymorphic element avoids duplicating card presentation, while context
+ * propagates compact spacing to its header, content, and footer sections.
+ */
 import { CardCompactProvider } from './CardContext.js'
 
 const statusClasses = {

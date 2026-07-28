@@ -1,3 +1,10 @@
+/**
+ * Owns the global active notifications, waiting queue, lifecycle phases, and
+ * imperative context API.
+ *
+ * A single viewport renders accessible notifications for every feature while
+ * individual Toast instances manage their own pausable auto-dismiss countdown.
+ */
 import {
   useCallback,
   useEffect,
@@ -80,6 +87,8 @@ function replaceById(items, id, replacement) {
 }
 
 export function ToastProvider({ children }) {
+  // Active and queued notifications share one provider-owned store. Separate
+  // frame and exit-timer registries allow each ID to clean up independently.
   const generatedPrefix = `toast-${useId().replaceAll(':', '')}`
   const counterRef = useRef(0)
   const storeRef = useRef({ active: [], queue: [] })
@@ -136,6 +145,8 @@ export function ToastProvider({ children }) {
     }
   }, [])
 
+  // Removal waits for the exit phase unless reduced motion requests no delay,
+  // then promotes the oldest queued notification into the five-item viewport.
   const removeAfterExit = useCallback(
     (id) => {
       clearExitTimer(id)
@@ -232,6 +243,8 @@ export function ToastProvider({ children }) {
     setStore({ active: [], queue: [] })
   }, [notifyDismiss])
 
+  // Stable IDs make creation idempotent for existing active or queued items;
+  // new notifications enter immediately until the visible limit is reached.
   const toast = useCallback(
     (options = {}) => {
       const callerId = normalizeId(options.id)
@@ -406,6 +419,8 @@ export function ToastProvider({ children }) {
     [toast],
   )
 
+  // Two animation frames separate mounting from the visible phase so entry
+  // transitions can run; tracked frames are cancelled during removal or unmount.
   useEffect(() => {
     const enteringIds = store.active
       .filter((notification) => notification.phase === 'entering')

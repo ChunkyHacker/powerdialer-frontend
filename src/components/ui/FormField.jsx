@@ -1,3 +1,8 @@
+/**
+ * Coordinates a label, control, helper text, and error message through stable
+ * IDs. Its render-prop contract lets different controls consume the same
+ * accessible field structure while this component owns descriptive content.
+ */
 import { useId } from 'react'
 
 function hasContent(value) {
@@ -21,6 +26,8 @@ function FormField({
   const controlId = id || `field-${generatedId.replaceAll(':', '')}`
   const helperId = `${controlId}-helper`
   const errorId = `${controlId}-error`
+  // Error content takes precedence so the control references and displays one
+  // authoritative description instead of competing helper and error messages.
   const hasError = hasContent(error)
   const hasHelper = !hasError && hasContent(helperText)
   const descriptionId = hasError ? errorId : hasHelper ? helperId : undefined

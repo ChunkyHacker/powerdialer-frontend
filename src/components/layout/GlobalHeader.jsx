@@ -1,3 +1,7 @@
+/**
+ * Coordinates route-aware header configuration and mutually exclusive shell
+ * menus while delegating each menu's interaction details to that menu.
+ */
 import { useEffect, useState } from 'react'
 import { Bell, Moon, Sun } from 'lucide-react'
 import { useMatches } from 'react-router'
@@ -13,6 +17,8 @@ function GlobalHeader() {
     () => document.documentElement.dataset.theme === 'dark',
   )
   const [openMenu, setOpenMenu] = useState(null)
+  // The deepest matched route is the most specific, so its metadata takes
+  // precedence over parent-route configuration.
   const searchPlaceholder =
     [...matches]
       .reverse()
@@ -23,6 +29,8 @@ function GlobalHeader() {
     document.documentElement.dataset.theme = isDarkTheme ? 'dark' : 'light'
   }, [isDarkTheme])
 
+  // One shared key prevents the organization and profile menus from remaining
+  // open together while preserving parent ownership of their controlled state.
   function setMenu(menuName, isOpen) {
     setOpenMenu(isOpen ? menuName : null)
   }

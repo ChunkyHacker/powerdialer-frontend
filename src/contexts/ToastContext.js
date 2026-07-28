@@ -1,3 +1,9 @@
+/**
+ * Exposes the global toast API to consumers.
+ *
+ * The guarded hook fails clearly when ToastProvider setup is missing instead of
+ * allowing consumers to operate on an absent context.
+ */
 import { createContext, useContext } from 'react'
 
 export const ToastContext = createContext(null)

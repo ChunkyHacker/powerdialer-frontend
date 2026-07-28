@@ -1,3 +1,8 @@
+/**
+ * Provides chart-library-independent framing, semantics, and state presentation
+ * around arbitrary chart content. Header actions remain outside the fixed chart
+ * viewport so they do not change the chart body's layout contract.
+ */
 import { useId } from 'react'
 import Card from './Card.jsx'
 import CardContent from './CardContent.jsx'
@@ -98,6 +103,8 @@ function ChartCard({
   className = '',
   children,
 }) {
+  // Stable IDs connect the card heading and optional description to the chart
+  // region without requiring consumers to coordinate accessibility attributes.
   const generatedId = useId()
   const titleId = `${generatedId}-title`
   const descriptionId = `${generatedId}-description`
@@ -108,6 +115,8 @@ function ChartCard({
   const selectedViewport =
     viewportClasses[size] ?? viewportClasses.standard
 
+  // Loading has priority over empty and populated states so only one body state
+  // renders, while the shared viewport keeps every state at a predictable size.
   let content = children
   if (loading) {
     content = <ChartSkeleton />

@@ -1,3 +1,7 @@
+/**
+ * Standardizes metric presentation while keeping overall card tone, trend
+ * direction, and trend sentiment as independent concerns.
+ */
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react'
 import Card from './Card.jsx'
 import CardContent from './CardContent.jsx'
@@ -22,6 +26,8 @@ const trendDirections = {
   },
 }
 
+// Trend input is normalized defensively so partial or unknown configuration
+// falls back to neutral presentation without changing the card's own tone.
 function normalizeTrend(trend) {
   if (!trend || typeof trend !== 'object' || Array.isArray(trend)) {
     return null
@@ -84,6 +90,8 @@ function Trend({ trend }) {
   )
 }
 
+// The loading grid mirrors optional regions in the populated card, minimizing
+// layout movement when the real metric content replaces its placeholders.
 function StatCardSkeleton({ hasIcon, hasStatus, hasSupportingRow }) {
   const hasTopRow = hasIcon || hasStatus
 
@@ -149,6 +157,8 @@ function StatCard({
   const displayValue = value ?? '—'
   const hasTopRow = Boolean(icon || status)
 
+  // The description list preserves the semantic label/value pairing regardless
+  // of optional icon, status, or trend content around the metric.
   return (
     <Card
       {...props}

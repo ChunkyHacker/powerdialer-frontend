@@ -1,3 +1,9 @@
+/**
+ * Displays a normalized overflow count for an AvatarGroup.
+ *
+ * Explicit size overrides inherited group size and then the standalone default;
+ * visual count formatting and accessible labeling are normalized separately.
+ */
 import { useAvatarGroup } from './AvatarGroupContext.js'
 import {
   avatarGroupedClasses,

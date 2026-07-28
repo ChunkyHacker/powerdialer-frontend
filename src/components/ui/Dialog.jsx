@@ -1,3 +1,9 @@
+/**
+ * Controlled compound dialog rendered in a document-body portal.
+ *
+ * Context coordinates visibility, dismissal policy, panel refs, and registered
+ * title/description IDs so DialogContent can enforce modal focus and labeling.
+ */
 import {
   createContext,
   useCallback,
@@ -48,6 +54,8 @@ function normalizeId(prefix, id) {
   return `${prefix}-${id.replaceAll(':', '')}`
 }
 
+// Focus candidates must still be connected, visible, enabled, and outside hidden
+// or inert ancestry before initial focus, trapping, or restoration can use them.
 function isUsableFocusTarget(element) {
   if (!(element instanceof HTMLElement) || !element.isConnected) {
     return false
@@ -199,6 +207,9 @@ export function DialogContent({
     requestCloseRef.current = requestClose
   }, [escapeDismissEnabled, requestClose])
 
+  // While open, this effect locks body scrolling, installs Escape dismissal,
+  // schedules initial focus, and restores the requested or previous focus target.
+  // Cleanup reverses global state and cancels pending initial-focus work.
   useEffect(() => {
     if (!open) {
       return undefined
@@ -290,6 +301,8 @@ export function DialogContent({
     return null
   }
 
+  // Tab is contained within usable panel controls; an empty panel or externally
+  // displaced focus falls back to the panel or the appropriate boundary item.
   function handlePanelKeyDown(event) {
     contentProps.onKeyDown?.(event)
 
@@ -322,6 +335,8 @@ export function DialogContent({
     }
   }
 
+  // The overlay owns outside-click detection, while the panel consumes explicit
+  // labels first and registered title/description IDs as accessible fallbacks.
   return createPortal(
     <div
       className="fixed inset-0 z-[60] flex min-h-full items-center justify-center bg-brand-primary/60 p-4 sm:p-6"

@@ -1,3 +1,7 @@
+/**
+ * Defines the public and protected route hierarchy plus the metadata consumed
+ * by application-shell features.
+ */
 import { Navigate } from 'react-router'
 import AppLayout from '../layouts/AppLayout.jsx'
 import AuthLayout from '../layouts/AuthLayout.jsx'
@@ -18,6 +22,8 @@ import NotFoundPage from '../../features/errors/pages/NotFoundPage.jsx'
 import { defaultHeaderSearchPlaceholder } from '../../constants/headerSearchPlaceholders.js'
 import ProtectedRoute from './ProtectedRoute.jsx'
 
+// A shared handle shape lets titles, breadcrumbs, and header search behavior
+// follow the active route without duplicating route knowledge in the shell.
 function createRouteHandle(title, searchPlaceholder = defaultHeaderSearchPlaceholder) {
   return {
     title,
@@ -41,6 +47,8 @@ export const routes = [
       },
     ],
   },
+  // ProtectedRoute owns access control; AppLayout then supplies the shell
+  // around whichever authenticated child route is active.
   {
     element: <ProtectedRoute />,
     children: [

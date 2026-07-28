@@ -1,6 +1,12 @@
+/**
+ * Hosts public authentication screens and redirects authenticated users back
+ * into the protected application.
+ */
 import { Navigate, Outlet, useLocation } from 'react-router'
 import { useAuth } from '../../contexts/AuthContext.jsx'
 
+// Only local application paths are accepted. Invalid, protocol-relative, or
+// login-loop destinations fall back to the default authenticated screen.
 function getSafeDestination(from) {
   if (
     typeof from?.pathname !== 'string' ||
@@ -30,6 +36,8 @@ function AuthLayout() {
     )
   }
 
+  // Signed-in users should not remain on public auth routes; a validated return
+  // destination preserves their original flow when one is available.
   if (isAuthenticated) {
     return (
       <Navigate

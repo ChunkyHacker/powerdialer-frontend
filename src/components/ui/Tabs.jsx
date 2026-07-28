@@ -1,3 +1,9 @@
+/**
+ * Accessible controlled or uncontrolled Tabs system.
+ *
+ * Registered triggers coordinate roving focus, keyboard activation, and stable
+ * trigger/panel ARIA relationships while each panel owns its rendered content.
+ */
 import {
   createContext,
   useCallback,
@@ -68,6 +74,8 @@ export function Tabs({
   const selectedActivationMode =
     activationMode === 'manual' ? 'manual' : 'automatic'
 
+  // Registration decouples compound children from render order; DOM sorting
+  // produces the visual navigation sequence even when children mount dynamically.
   const registerTrigger = useCallback((registrationId, trigger) => {
     triggersRef.current.set(registrationId, trigger)
     setTriggersVersion((currentVersion) => currentVersion + 1)
@@ -294,6 +302,8 @@ export function TabsTrigger({
     }
   }
 
+  // Roving focus follows orientation-aware arrows plus Home/End. Automatic mode
+  // selects on focus movement, while manual mode waits for Enter or Space.
   function handleKeyDown(event) {
     onKeyDown?.(event)
 
