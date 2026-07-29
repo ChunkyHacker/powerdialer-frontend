@@ -2,34 +2,77 @@
  * Provides the application-wide authentication state and actions.
  * The consumer hook rejects usage outside this provider boundary.
  */
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
+import {
+  authenticateWithPassword,
+  authenticateWithProvider,
+  clearMockSession,
+  restoreMockSession,
+  storeMockSession,
+} from '../services/auth/mockAuthService.js'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Session resolution is currently simulated asynchronously. Cleanup prevents
-  // the timer from updating provider state after the provider unmounts.
+  // Resolve stored mock sessions asynchronously so route guards can wait for
+  // authentication state before deciding whether to redirect.
   useEffect(() => {
     const sessionTimer = window.setTimeout(() => {
+      setUser(restoreMockSession())
       setIsLoading(false)
-    }, 300)
+    }, 0)
 
     return () => window.clearTimeout(sessionTimer)
   }, [])
 
-  // A stable value prevents context consumers from updating when neither
-  // authentication nor loading state has changed.
+  const login = useCallback(async ({ email, password, rememberMe }) => {
+    const authenticatedUser = await authenticateWithPassword({
+      email,
+      password,
+    })
+
+    storeMockSession(authenticatedUser, rememberMe)
+    setUser(authenticatedUser)
+    return authenticatedUser
+  }, [])
+
+  const loginWithProvider = useCallback(
+    async (provider, { rememberMe } = {}) => {
+      const authenticatedUser =
+        await authenticateWithProvider(provider)
+
+      storeMockSession(authenticatedUser, rememberMe)
+      setUser(authenticatedUser)
+      return authenticatedUser
+    },
+    [],
+  )
+
+  const logout = useCallback(() => {
+    clearMockSession()
+    setUser(null)
+  }, [])
+
   const authValue = useMemo(
     () => ({
-      isAuthenticated,
+      user,
+      isAuthenticated: Boolean(user),
       isLoading,
-      login: () => setIsAuthenticated(true),
-      logout: () => setIsAuthenticated(false),
+      login,
+      loginWithProvider,
+      logout,
     }),
-    [isAuthenticated, isLoading],
+    [isLoading, login, loginWithProvider, logout, user],
   )
 
   return (
