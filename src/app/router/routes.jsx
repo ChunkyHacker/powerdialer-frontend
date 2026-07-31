@@ -8,6 +8,7 @@ import AuthLayout from '../layouts/AuthLayout.jsx'
 import LoginPage from '../../features/auth/pages/LoginPage.jsx'
 import DashboardPage from '../../features/dashboard/pages/DashboardPage.jsx'
 import CampaignsPage from '../../features/campaigns/pages/CampaignsPage.jsx'
+import LeadImportPage from '../../features/lead-lists/pages/LeadImportPage.jsx'
 import LeadListsPage from '../../features/lead-lists/pages/LeadListsPage.jsx'
 import LeadsPage from '../../features/leads/pages/LeadsPage.jsx'
 import DialerPage from '../../features/dialer/pages/DialerPage.jsx'
@@ -69,6 +70,11 @@ export const routes = [
             path: '/lead-lists',
             element: <LeadListsPage />,
             handle: createRouteHandle('Lead Lists'),
+          },
+          {
+            path: '/lead-lists/import',
+            element: <LeadImportPage />,
+            handle: createRouteHandle('Import Leads'),
           },
           {
             path: '/leads',
